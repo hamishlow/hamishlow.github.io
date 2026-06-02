@@ -1,0 +1,566 @@
+/* ============================================================
+   al-folio faithful reproduction — Hamish Low demo
+   ============================================================ */
+
+/* --- Google Fonts (Inter) ---------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* --- CSS Custom Properties (light mode) ------------------- */
+:root {
+  --bg:            #ffffff;
+  --bg-alt:        #f8f9fa;
+  --text:          #212529;
+  --text-muted:    #6c757d;
+  --accent:        #0891B2;
+  --accent-hover:  #0E7490;
+  --border:        #dee2e6;
+  --nav-bg:        rgba(255, 255, 255, 0.97);
+  --nav-height:    56px;
+  --sidebar-w:     28%;
+  --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius:        4px;
+  --shadow:        0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* --- Dark mode -------------------------------------------- */
+[data-theme="dark"] {
+  --bg:         #1a1a1a;
+  --bg-alt:     #242424;
+  --text:       #e8e8e8;
+  --text-muted: #9a9a9a;
+  --accent:     #22D3EE;
+  --border:     #3a3a3a;
+  --nav-bg:     rgba(26, 26, 26, 0.97);
+  --shadow:     0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* --- Reset & Base ----------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding-top: var(--nav-height);
+  transition: background 0.2s, color 0.2s;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* --- Navbar ----------------------------------------------- */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1.5rem;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  white-space: nowrap;
+  margin-right: auto;
+}
+.navbar-brand:hover { color: var(--accent); text-decoration: none; }
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  list-style: none;
+}
+
+.navbar-links a {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+}
+.navbar-links a:hover,
+.navbar-links a.active { color: var(--accent); text-decoration: none; }
+
+/* Dark mode toggle button */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1;
+  transition: border-color 0.15s, color 0.15s;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Hamburger (mobile) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+/* --- Page wrapper ----------------------------------------- */
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+
+/* --- Homepage: two-column layout -------------------------- */
+.about-layout {
+  display: flex;
+  gap: 3.5rem;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.profile-sidebar {
+  flex: 0 0 var(--sidebar-w);
+  min-width: 200px;
+  text-align: center;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border);
+  margin-bottom: 1.25rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Placeholder when no photo */
+.profile-placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  border: 3px solid var(--border);
+  margin: 0 auto 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.profile-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+
+.profile-title {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  font-weight: 400;
+}
+
+.profile-affil {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.profile-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem auto;
+  width: 60%;
+}
+
+/* Social icon links */
+.social-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 8px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.social-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+/* Bio content area */
+.bio-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.bio-content p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.bio-content h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* News list */
+.news-list {
+  list-style: none;
+  font-size: 0.875rem;
+}
+
+.news-list li {
+  display: flex;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--bg-alt);
+  align-items: baseline;
+}
+
+.news-date {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  min-width: 44px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Research / Publications page ------------------------- */
+.publications-header {
+  margin-bottom: 2rem;
+}
+
+.publications-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.section-heading {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pub-list {
+  list-style: none;
+}
+
+.pub-entry {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.pub-entry:last-child { border-bottom: none; }
+
+.pub-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.pub-authors {
+  font-size: 0.855rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+/* Highlight Hamish's name */
+.pub-authors strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pub-venue {
+  font-size: 0.855rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.pub-status {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin-bottom: 0.5rem;
+  margin-left: 0.4rem;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.btn-pill {
+  display: inline-block;
+  font-size: 0.775rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 9px;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  font-family: var(--font);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  text-decoration: none;
+  line-height: 1.6;
+}
+.btn-pill:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.btn-pill.abstract-toggle { cursor: pointer; }
+.btn-pill.abstract-toggle.open {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.abstract-body {
+  margin-top: 0.75rem;
+  font-size: 0.855rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  background: var(--bg-alt);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+/* --- CV page ---------------------------------------------- */
+.cv-page h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.cv-download-box {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cv-download-box p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff !important;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--accent-hover); text-decoration: none !important; }
+
+/* CV download link */
+.cv-download {
+  margin-bottom: 1.5rem;
+}
+
+/* PhD topic cards */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.topic-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+
+.topic-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.topic-card p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* CV section rows */
+.cv-section {
+  margin-bottom: 2.5rem;
+}
+
+.cv-section h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.cv-row {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.cv-row-year {
+  flex-shrink: 0;
+  min-width: 100px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding-top: 1px;
+}
+
+/* Position/role titles in CV rows — displayed as their own line */
+.cv-role {
+  display: block;
+  font-weight: 600;
+}
+
+/* Author name highlights — stay inline and don't break mid-name */
+.cv-row-body strong,
+.pub-authors strong {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* --- Chicago Fed seal ------------------------------------- */
+.chicago-fed-seal {
+  display: block;
+  width: 72px;
+  margin: 0.75rem auto 0;
+  opacity: 0.85;
+}
+
+/* --- Footer ----------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4rem;
+}
+
+.footer-disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.footer-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* --- Disabled pill button --------------------------------- */
+.btn-pill--disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* --- Responsive ------------------------------------------- */
+@media (max-width: 680px) {
+  .navbar { padding: 0 1rem; gap: 0.75rem; }
+  .navbar-links { display: none; flex-direction: column; position: fixed;
+    top: var(--nav-height); left: 0; right: 0; background: var(--nav-bg);
+    border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; gap: 0.75rem;
+    z-index: 99; }
+  .navbar-links.open { display: flex; }
+  .hamburger { display: flex; }
+  .page-container { padding: 2rem 1.25rem 3rem; }
+  .about-layout { flex-direction: column; gap: 2rem; }
+  .profile-sidebar { width: 100%; flex: unset; }
+  .profile-photo, .profile-placeholder { width: 140px; height: 140px; }
+  .cv-download-box { flex-direction: column; align-items: flex-start; }
+  .cv-row { flex-direction: column; gap: 0.2rem; }
+  .cv-row-year { min-width: unset; }
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamish Low</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">Hamish Low</a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="navbar-links" id="nav-links">
+      <li><a href="index.html" class="active">about</a></li>
+      <li><a href="research.html">research</a></li>
+      <li><a href="cv.html">CV</a></li>
+      <li><a href="#" title="Coming soon">software</a></li>
+      <li>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          ☾
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ===== Main ===== -->
+  <div class="page-container">
+    <div class="about-layout">
+
+      <!-- Sidebar -->
+      <aside class="profile-sidebar">
+        <img src="profile.jpg" class="profile-photo" alt="Hamish Low" />
+
+        <p class="profile-name">Hamish Low</p>
+        <p class="profile-title">Senior Economist &amp; Economic Advisor</p>
+        <p class="profile-affil">Federal Reserve Bank of Chicago</p>
+        <p class="profile-affil" style="margin-top:0.4rem; font-size:0.78rem;">Research Fellow, IFS &amp; CEPR</p>
+
+        <img src="chicago-fed-seal.png"
+             alt="Federal Reserve Bank of Chicago"
+             class="chicago-fed-seal" />
+
+        <hr class="profile-divider" />
+
+        <div class="social-links">
+          <a class="social-btn" href="mailto:hamish.low@chi.frb.org" title="Email">
+            ✉ Email
+          </a>
+          <a class="social-btn"
+             href="https://scholar.google.com/citations?user=BM3A-LIAAAAJ"
+             target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px;margin-right:3px" aria-hidden="true"><path d="M12 3L1 9l11 6 11-6-11-6zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>Scholar
+          </a>
+        </div>
+      </aside>
+
+      <!-- Bio -->
+      <section class="bio-content">
+        <p>
+          I am a Senior Economist and Economic Advisor at the
+          <strong>Federal Reserve Bank of Chicago</strong>, and a Research Fellow at the
+          Institute for Fiscal Studies (IFS) and the Centre for Economic Policy Research (CEPR).
+          Previously, I was the <strong>James Meade Professor of Economics</strong>
+          at the University of Oxford and a Fellow of Nuffield College.
+        </p>
+        <p>
+          My research asks: <em>What risks do individuals face over their lifetimes, and to what
+          extent can they insure against those risks?</em> I use life-cycle simulation models
+          incorporating uncertainty, combined with structural estimation methods, to understand
+          how individuals and families make decisions dynamically. My work spans
+          <strong>public finance</strong>, <strong>labor economics</strong>,
+          and <strong>macroeconomics</strong>, with emphasis on individual and family
+          heterogeneity and on connecting empirical data closely with theoretical models.
+        </p>
+        <p>
+          I have recently been involved in Oxford's
+          <a href="https://www.economics.ox.ac.uk/what-economists-really-do" target="_blank" rel="noopener">
+          <em>What Economists Really Do</em></a> public education series, where I
+          discussed disability insurance.
+        </p>
+
+        <!-- News -->
+        <h2>News</h2>
+        <ul class="news-list">
+          <li>
+            <span class="news-date">2025</span>
+            <span>New paper: <a href="research.html">"Fertility and Family Labor Supply"</a>
+            (with Jakobsen &amp; Jørgensen) — R&amp;R at <em>American Economic Review</em>.</span>
+          </li>
+          <li>
+            <span class="news-date">2025</span>
+            <span>New paper: <a href="research.html">"Joint Child Custody and Interstate Migration"</a>
+            (with Adams, Bayraktar, Jørgensen &amp; Voena).</span>
+          </li>
+          <li>
+            <span class="news-date">2025</span>
+            <span>New paper: <a href="research.html">"Eliciting the Marginal Propensity to Consume in Surveys"</a>
+            (with Crossley, Fisher &amp; Levell).</span>
+          </li>
+          <li>
+            <span class="news-date">2025</span>
+            <span>New paper: <a href="research.html">"Outcome Tests and Screening Errors"</a>
+            (with Pistaferri).</span>
+          </li>
+          <li>
+            <span class="news-date">2025</span>
+            <span><a href="research.html">"Consumption and Income Inequality Across Generations"</a>
+            (with Gallipoli &amp; Mitra) — forthcoming,
+            <em>Journal of Labor Economics</em>.</span>
+          </li>
+          <li>
+            <span class="news-date">2024</span>
+            <span><a href="research.html">"Disability Insurance: Error Rates and Gender Differences"</a>
+            — conditional accept, <em>Journal of Political Economy</em>.</span>
+          </li>
+        </ul>
+      </section>
+
+    </div><!-- .about-layout -->
+  </div><!-- .page-container -->
+
+  <footer class="site-footer">
+    <p class="footer-disclaimer">
+      The views expressed on this website are those of the author and do not necessarily
+      represent the views of the Federal Reserve Bank of Chicago or the Federal Reserve System.
+    </p>
+    <p class="footer-meta">Last updated April 2025.</p>
+  </footer>
+
+  <script>
+    // Dark mode toggle
+    const toggle = document.getElementById('theme-toggle');
+    const root   = document.documentElement;
+    toggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      toggle.textContent = isDark ? '☾' : '☀';
+    });
+
+    // Mobile hamburger
+    const burger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  </script>
+
+</body>
+</html>
