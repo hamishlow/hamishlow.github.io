@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commentary — Hamish Low</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="index.html">Hamish Low</a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="navbar-links" id="nav-links">
+      <li><a href="index.html">about</a></li>
+      <li><a href="research.html">research</a></li>
+      <li><a href="commentary.html" class="active">commentary</a></li>
+      <li><a href="cv.html">CV</a></li>
+      <li>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ===== Main ===== -->
+  <div class="page-container">
+
+    <div class="publications-header">
+      <h1>Policy Writing &amp; Commentary</h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Policy reports, columns and notes written for a wider audience.
+      </p>
+    </div>
+
+    <ul class="pub-compact">
+      <li><span class="pub-year">2019</span><span class="pub-cite"><a href="https://ukfires.org/impact/publications/reports/absolute-zero/" target="_blank" rel="noopener">Absolute Zero</a>: a report on the economic and engineering implications of achieving absolute zero carbon emissions. <a href="https://ukfires.org/" target="_blank" rel="noopener">UK FIRES</a>.</span></li>
+      <li><span class="pub-year">2018</span><span class="pub-cite"><a href="https://ifs.org.uk/articles/aggregating-labour-supply-elasticities-importance-heterogeneity" target="_blank" rel="noopener">Aggregating Labour Supply Elasticities: The Importance of Heterogeneity</a>. <em>VoxEU</em>.</span></li>
+      <li><span class="pub-year">2018</span><span class="pub-cite"><a href="https://cepr.org/voxeu/columns/impact-time-limits-employment-divorce-and-social-safety-net" target="_blank" rel="noopener">The Impact of Time Limits on Employment, Divorce, and the Social Safety Net</a>. <em>VoxEU</em>.</span></li>
+      <li><span class="pub-year">2016</span><span class="pub-cite"><a href="https://microeconomicinsights.org/disability-insurance-dynamics-incentive-insurance-tradeoff/" target="_blank" rel="noopener">Disability Insurance and the Dynamics of the Incentive-Insurance Tradeoff</a>. <em>Microeconomic Insights</em>.</span></li>
+      <li><span class="pub-year">2009</span><span class="pub-cite"><a href="https://drive.google.com/drive/folders/1InIYOjZYMjrRESdkB2sV2wIu-5A-aPt_" target="_blank" rel="noopener">Note on the Teaching of Economics</a>. <em>The Fountain</em>, Trinity College, Cambridge.</span></li>
+      <li><span class="pub-year">2008</span><span class="pub-cite"><a href="https://drive.google.com/drive/folders/1InIYOjZYMjrRESdkB2sV2wIu-5A-aPt_" target="_blank" rel="noopener">Note on the Funding of Teaching in Higher Education</a>. Cambridge Union.</span></li>
+    </ul>
+
+  </div><!-- .page-container -->
+
+  <footer class="site-footer">
+    <p class="footer-disclaimer">
+      The views expressed on this website are those of the author and do not necessarily
+      represent the views of the Federal Reserve Bank of Chicago or the Federal Reserve System.
+    </p>
+    <p class="footer-meta">Last updated October 2026.</p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const root   = document.documentElement;
+    toggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      toggle.textContent = isDark ? '☾' : '☀';
+    });
+    const burger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  </script>
+
+</body>
+</html>
