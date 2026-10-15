@@ -355,6 +355,29 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   align-items: center;
 }
 
+/* Compact one-line-per-paper list (earlier publications) */
+.pub-compact {
+  list-style: none;
+  font-size: 0.855rem;
+}
+.pub-compact li {
+  display: flex;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--bg-alt);
+  align-items: baseline;
+}
+.pub-compact li:last-child { border-bottom: none; }
+.pub-compact .pub-year {
+  flex-shrink: 0;
+  min-width: 2.6rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pub-compact .pub-cite { color: var(--text-muted); }
+.pub-compact .pub-cite a { color: var(--text); font-weight: 500; }
+.pub-compact .pub-cite a:hover { color: var(--accent); }
+
 .btn-pill {
   display: inline-block;
   font-size: 0.775rem;
