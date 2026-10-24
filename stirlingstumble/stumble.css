@@ -202,6 +202,33 @@ h1 {
 .highlight h3 { font-size: 2em; margin-bottom: 20px; }
 .highlight p { font-size: 1.2em; }
 
+/* Results table */
+.results-wrap { overflow-x: auto; }
+.results {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 1.05em;
+}
+.results th {
+  background: var(--navy);
+  color: var(--cream);
+  text-align: left;
+  padding: 12px 16px;
+}
+.results td { padding: 10px 16px; border-bottom: 1px solid #e5e5e5; }
+.results tr:nth-child(even) td { background: var(--card); }
+.results .pos { width: 3em; color: var(--muted); }
+
+/* Race report text */
+.report {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1em;
+}
+.report p { margin-bottom: 1em; }
+
 /* Photo gallery: add one <figure> per photo */
 .gallery {
   display: grid;
