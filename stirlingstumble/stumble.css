@@ -1,0 +1,240 @@
+/* =========================================================
+   Stirling Stumble — shared styles for every race page.
+   Colours are set once here; change them to restyle all pages.
+   ========================================================= */
+:root {
+  --navy: #003366;
+  --navy-light: #004d99;
+  --cream: #f5e6d3;
+  --green: #8fbc8f;
+  --text: #333;
+  --muted: #666;
+  --card: #f9f9f9;
+}
+
+/* Bryce Canyon page uses canyon colours instead of navy */
+body.bryce {
+  --navy: #3b1f12;
+  --navy-light: #a4471b;
+  --green: #d9822b;
+}
+
+/* Greenwich Grind page */
+body.greenwich {
+  --navy: #1b3a2b;
+  --navy-light: #2e6b4f;
+  --green: #c9a227;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: #fff;
+}
+
+a { color: var(--navy-light); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* Tartan stripe at top and bottom of each page */
+.tartan-accent {
+  height: 15px;
+  background: repeating-linear-gradient(90deg,
+    #2d5016 0px, #2d5016 30px, #000 30px, #000 35px,
+    #1e3a8a 35px, #1e3a8a 40px, #000 40px, #000 45px,
+    #ffd700 45px, #ffd700 50px, #000 50px, #000 55px,
+    #2d5016 55px, #2d5016 85px);
+  position: relative;
+}
+.tartan-accent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+    transparent 0px, transparent 3px, rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 4px);
+}
+
+/* Small "back to all races" bar */
+.topnav {
+  background: var(--navy);
+  padding: 10px 20px;
+  font-size: 0.9em;
+}
+.topnav a { color: var(--cream); text-decoration: none; }
+.topnav a:hover { text-decoration: underline; }
+
+/* Big banner at the top of each page */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--cream);
+  padding: 60px 20px;
+  text-align: center;
+}
+.logo-container {
+  max-width: 400px;
+  margin: 0 auto 30px;
+  background: var(--navy);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.logo-plain { max-width: 320px; margin: 0 auto 30px; }
+h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.tagline { font-size: 1.3em; margin-bottom: 20px; font-style: italic; }
+.date-banner {
+  background: var(--cream);
+  color: var(--navy);
+  padding: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 30px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.section { margin: 60px 0; }
+.section h2 {
+  color: var(--navy);
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Race cards (10K / 5K on race pages) */
+.race-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+.race-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--cream);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.race-card:hover { transform: translateY(-10px); }
+.race-card h3 { font-size: 2.2em; margin-bottom: 15px; color: var(--cream); }
+.race-card .distance { font-size: 3em; font-weight: bold; margin: 20px 0; color: var(--green); }
+
+/* Series cards (one per race, on the main Stumble page) */
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+.series-card {
+  display: block;
+  background: var(--card);
+  border-radius: 15px;
+  border-top: 6px solid var(--navy);
+  padding: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.series-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+.series-card img { width: 180px; height: 180px; object-fit: contain; margin: 0 auto 20px; }
+.series-card .placeholder-logo {
+  width: 180px; height: 180px; margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+  padding: 20px;
+}
+.series-card .race-number { color: var(--muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 2px; }
+.series-card h3 { color: var(--navy); font-size: 1.6em; margin: 6px 0; }
+.series-card .when { color: var(--muted); }
+.series-card .status {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.8em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--green);
+  color: #fff;
+}
+
+/* Info cards */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+.info-card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 10px;
+  border-left: 5px solid var(--navy);
+}
+.info-card h3 { color: var(--navy); margin-bottom: 15px; font-size: 1.5em; }
+.info-card p { color: var(--muted); line-height: 1.8; }
+
+/* Green call-out boxes */
+.highlight {
+  background: var(--green);
+  color: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  margin: 40px 0;
+}
+.highlight h3 { font-size: 2em; margin-bottom: 20px; }
+.highlight p { font-size: 1.2em; }
+
+/* Photo gallery: add one <figure> per photo */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.gallery figure {
+  background: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery figcaption { padding: 10px 14px; font-size: 0.9em; color: var(--muted); }
+.gallery-empty {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  padding: 40px 20px;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+}
+
+footer {
+  background: var(--navy);
+  color: var(--cream);
+  text-align: center;
+  padding: 30px 20px;
+}
+.container { padding-bottom: 60px; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 2em; }
+  .section h2 { font-size: 2em; }
+  .logo-container { padding: 24px; }
+}
