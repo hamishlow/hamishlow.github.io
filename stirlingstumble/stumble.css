@@ -243,6 +243,10 @@ h1 {
 }
 .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .gallery figcaption { padding: 10px 14px; font-size: 0.9em; color: var(--muted); }
+/* A single wide photo across the full width (add class="gallery wide") */
+.gallery.wide { grid-template-columns: 1fr; }
+.gallery.wide img { aspect-ratio: 16 / 9; }
+
 /* Optional sub-heading above a row of photos */
 .gallery-heading {
   color: var(--navy);
