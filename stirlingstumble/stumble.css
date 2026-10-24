@@ -243,6 +243,16 @@ h1 {
 }
 .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .gallery figcaption { padding: 10px 14px; font-size: 0.9em; color: var(--muted); }
+/* Optional sub-heading above a row of photos */
+.gallery-heading {
+  color: var(--navy);
+  font-size: 1.3em;
+  margin: 30px 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.gallery-heading:first-of-type { margin-top: 0; }
+
 .gallery-empty {
   text-align: center;
   color: var(--muted);
