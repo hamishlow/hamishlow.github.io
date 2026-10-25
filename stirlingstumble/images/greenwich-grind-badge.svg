@@ -13,14 +13,10 @@
   <!-- Inner ring -->
   <circle cx="200" cy="200" r="112" fill="#14472c" stroke="#c9a227" stroke-width="4"/>
 
-  <!-- "Stumbling On" around the edge, top and bottom -->
-  <text font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" font-size="40" font-weight="800"
-        letter-spacing="6" fill="#f5e6d3">
-    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">STUMBLING ON</textPath>
-  </text>
-  <text font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" font-size="26" font-weight="700"
-        letter-spacing="5" fill="#c9a227" dominant-baseline="hanging">
-    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">★ RACE 3 · 2026 ★</textPath>
+  <!-- "Stumbling On" around the bottom edge -->
+  <text font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" font-size="28" font-weight="800"
+        letter-spacing="5" fill="#f5e6d3" dominant-baseline="hanging">
+    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">STUMBLING ON</textPath>
   </text>
 
   <!-- Centre: race name -->
