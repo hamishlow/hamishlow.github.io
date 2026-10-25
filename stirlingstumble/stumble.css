@@ -231,11 +231,14 @@ h1 {
 
 /* Photo gallery: add one <figure> per photo */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  margin-bottom: 20px;
 }
 .gallery figure {
+  flex: 0 1 270px;
   background: var(--card);
   border-radius: 10px;
   overflow: hidden;
@@ -244,13 +247,14 @@ h1 {
 .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .gallery figcaption { padding: 10px 14px; font-size: 0.9em; color: var(--muted); }
 /* A single wide photo across the full width (add class="gallery wide") */
-.gallery.wide { grid-template-columns: 1fr; }
+.gallery.wide figure { flex-basis: 100%; }
 .gallery.wide img { aspect-ratio: 16 / 9; }
 
 /* Optional sub-heading above a row of photos */
 .gallery-heading {
   color: var(--navy);
   font-size: 1.3em;
+  text-align: center;
   margin: 30px 0 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
