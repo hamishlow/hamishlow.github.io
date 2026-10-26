@@ -19,11 +19,11 @@ body.bryce {
   --green: #d9822b;
 }
 
-/* Greenwich Grind page */
+/* Greenwich Grind page: navy and gold, to match its badge */
 body.greenwich {
-  --navy: #1b3a2b;
-  --navy-light: #2e6b4f;
-  --green: #c9a227;
+  --navy: #0f2550;
+  --navy-light: #1f3f7a;
+  --green: #c08a2e;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
