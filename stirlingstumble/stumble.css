@@ -190,6 +190,12 @@ h1 {
 .info-card h3 { color: var(--navy); margin-bottom: 15px; font-size: 1.5em; }
 .info-card p { color: var(--muted); line-height: 1.8; }
 
+/* Name lists inside info cards (the field for a race) */
+.field-list { list-style: none; }
+.field-list li { padding: 4px 0; color: var(--text); font-size: 1.05em; }
+.field-list li + li { border-top: 1px solid #ececec; }
+.field-list .age, .field-list .note { color: var(--muted); font-size: 0.9em; }
+
 /* Green call-out boxes */
 .highlight {
   background: var(--green);
