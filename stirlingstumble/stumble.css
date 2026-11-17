@@ -190,6 +190,13 @@ h1 {
 .info-card h3 { color: var(--navy); margin-bottom: 15px; font-size: 1.5em; }
 .info-card p { color: var(--muted); line-height: 1.8; }
 
+/* The field: three cards per row so names stay on one line */
+.field-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .field-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .field-grid { grid-template-columns: 1fr; } }
+.field-list li { white-space: nowrap; }
+@media (max-width: 600px) { .field-list li { white-space: normal; } }
+
 /* Name lists inside info cards (the field for a race) */
 .field-list { list-style: none; }
 .field-list li { padding: 4px 0; color: var(--text); font-size: 1.05em; }
