@@ -203,6 +203,11 @@ h1 {
 .field-list li + li { border-top: 1px solid #ececec; }
 .field-list .age, .field-list .note { color: var(--muted); font-size: 0.9em; }
 
+/* Itinerary lists (one per day) */
+.plan-list { list-style: none; }
+.plan-list li { padding: 8px 0; color: var(--text); line-height: 1.6; }
+.plan-list li + li { border-top: 1px solid #ececec; }
+
 /* Green call-out boxes */
 .highlight {
   background: var(--green);
