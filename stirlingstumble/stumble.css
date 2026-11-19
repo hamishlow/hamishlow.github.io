@@ -324,19 +324,68 @@ h1 {
 }
 
 /* ===== Stumble Bookies (betting page) ===== */
-.bet-cta {
-  display: inline-block;
-  margin-top: 20px;
+/* Big gold banner linking to the betting page, at the top of the Grind page */
+.bet-banner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 40px 0 0;
+  padding: 26px 32px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.35) 0, transparent 45%),
+    linear-gradient(135deg, #c08a2e 0%, #e8c77a 50%, #c08a2e 100%);
+  border: 3px solid var(--navy);
+  box-shadow: 0 12px 34px rgba(192, 138, 46, 0.45);
+  color: var(--navy);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bet-banner:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(192, 138, 46, 0.55); }
+.bet-banner-dice { font-size: 3.5em; line-height: 1; animation: bet-roll 3s ease-in-out infinite; }
+@keyframes bet-roll {
+  0%, 80%, 100% { transform: rotate(0deg); }
+  88% { transform: rotate(-20deg); }
+  94% { transform: rotate(15deg); }
+}
+@media (prefers-reduced-motion: reduce) { .bet-banner-dice { animation: none; } }
+.bet-banner-text { flex: 1; display: flex; flex-direction: column; }
+.bet-banner-kicker { font-style: italic; font-weight: 600; }
+.bet-banner-title {
+  font-size: 2.2em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.15;
+}
+.bet-banner-sub { font-size: 0.95em; }
+.bet-banner-go {
+  flex: 0 0 auto;
   background: var(--navy);
   color: var(--cream);
-  padding: 12px 28px;
+  padding: 12px 26px;
   border-radius: 30px;
   font-weight: 700;
   font-size: 1.1em;
-  text-decoration: none;
-  letter-spacing: 1px;
+  white-space: nowrap;
 }
-.bet-cta:hover { background: var(--navy-light); }
+@media (max-width: 700px) {
+  .bet-banner { flex-direction: column; text-align: center; gap: 12px; padding: 22px 18px; }
+  .bet-banner-title { font-size: 1.7em; }
+}
+/* Odds summary table at the top of The Book */
+.odds-wrap { margin-bottom: 30px; }
+.odds-table { max-width: 900px; }
+.odds-table td { vertical-align: middle; }
+.odds-bet { font-weight: 700; color: var(--navy); white-space: nowrap; }
+.odds-cell span { display: block; line-height: 1.35; }
+.odds-name { font-weight: 600; }
+.odds-pays { font-size: 1.25em; font-weight: 800; color: #8a5a12; }
+.odds-pool { font-size: 0.8em; color: var(--muted); white-space: nowrap; }
+.odds-won { box-shadow: inset 4px 0 0 var(--green); }
+.odds-status { font-size: 0.9em; color: var(--muted); white-space: nowrap; }
+.odds-status.odds-open { color: #2d7a2d; font-weight: 700; }
+.odds-note { max-width: 900px; margin: 8px auto 0; font-size: 0.85em; color: var(--muted); font-style: italic; }
 .bets-notice {
   margin-top: 30px;
   padding: 16px 20px;

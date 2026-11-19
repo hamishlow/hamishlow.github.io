@@ -48,6 +48,13 @@
     <!-- ===== THE BOOK ===== -->
     <section class="section">
       <h2>The Book</h2>
+      <div class="results-wrap odds-wrap">
+        <table class="results odds-table">
+          <thead><tr><th>Bet</th><th>Side A</th><th>Side B</th><th>Pool</th><th>Status</th></tr></thead>
+          <tbody id="odds-summary"><tr><td colspan="5" class="muted">Loading the odds…</td></tr></tbody>
+        </table>
+        <p class="odds-note">Payouts are per S£1 staked, based on the money in each pool right now. ★ marks the favourite.</p>
+      </div>
       <div class="bettor">
         <label>Your name <input id="bettor-name" type="text" maxlength="30" autocomplete="name" placeholder="e.g. Shona"></label>
         <label>4-digit PIN <input id="bettor-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••"></label>
@@ -161,6 +168,46 @@
     }).join('');
   }
 
+  // Money in each side of a market, and what each side pays per S£1.
+  function marketStats(m) {
+    const inMarket = bets.filter((b) => b.market_id === m.id);
+    const total = inMarket.reduce((s, b) => s + b.stake, 0);
+    const side = (pick) => {
+      const own = inMarket.filter((b) => b.pick === pick);
+      const pool = own.reduce((s, b) => s + b.stake, 0);
+      return { pool, count: own.length, odds: pool ? total / pool : null };
+    };
+    return { total, a: side('a'), b: side('b') };
+  }
+
+  function statusText(m) {
+    if (m.result === 'void') return 'Void: refunded';
+    if (m.result) return `${esc(m.result === 'a' ? m.option_a : m.option_b)} won`;
+    if (!isOpen(m)) return 'Closed: awaiting result';
+    return 'Open';
+  }
+
+  function renderSummary() {
+    if (!markets.length) return;
+    $('odds-summary').innerHTML = markets.map((m) => {
+      const s = marketStats(m);
+      const fav = s.a.pool > s.b.pool ? 'a' : s.b.pool > s.a.pool ? 'b' : null;
+      const cell = (pick) => {
+        const x = s[pick];
+        const name = esc(pick === 'a' ? m.option_a : m.option_b);
+        const won = m.result === pick ? ' odds-won' : '';
+        return `<td class="odds-cell${won}">
+            <span class="odds-name">${name}${fav === pick ? ' ★' : ''}</span>
+            <span class="odds-pays">${x.odds ? x.odds.toFixed(2) + '×' : 'no bets'}</span>
+            <span class="odds-pool">${fmt(x.pool)} · ${x.count} bet${x.count === 1 ? '' : 's'}</span>
+          </td>`;
+      };
+      const open = isOpen(m) ? ' odds-open' : '';
+      return `<tr><td class="odds-bet">${esc(m.option_a)} vs ${esc(m.option_b)}</td>${cell('a')}${cell('b')}
+          <td><strong>${fmt(s.total)}</strong></td><td class="odds-status${open}">${statusText(m)}</td></tr>`;
+    }).join('');
+  }
+
   function renderLeaderboard() {
     const names = [...new Set(bets.map((b) => b.player))];
     if (!names.length) return;
@@ -189,6 +236,7 @@
   }
 
   function renderAll() {
+    renderSummary();
     renderMarkets();
     renderLeaderboard();
     renderFeed();
