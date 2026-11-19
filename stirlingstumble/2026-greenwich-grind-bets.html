@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>The Stumble Bookies - The Greenwich Grind</title>
+  <link rel="stylesheet" href="stumble.css">
+</head>
+<body class="greenwich">
+  <div class="tartan-accent"></div>
+  <div class="topnav"><a href="2026-greenwich-grind.html">&larr; Back to the Greenwich Grind</a></div>
+
+  <div class="hero">
+    <h1>The Stumble Bookies</h1>
+    <p class="tagline">The Greenwich Grind &middot; Place your bets</p>
+    <div class="date-banner">🎲 Betting closes 9am, Saturday 28th November</div>
+  </div>
+
+  <div class="container">
+
+    <div id="not-connected" class="bets-notice" hidden>
+      The bookies are not open yet: the betting database has not been connected.
+    </div>
+
+    <!-- ===== HOUSE RULES ===== -->
+    <section class="section">
+      <h2>House Rules</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>💷 100 Stumble Pounds</h3>
+          <p>Everyone starts with 100 Stumble Pounds (S£) to spread across the bets however they like.
+          It is play money only: no real money changes hands.</p>
+        </div>
+        <div class="info-card">
+          <h3>🏦 Pool Betting</h3>
+          <p>Each bet is a pool. When it is settled, everyone who backed the winner shares the whole
+          pool in proportion to their stake. The odds move as people bet.</p>
+        </div>
+        <div class="info-card">
+          <h3>🔐 Name and PIN</h3>
+          <p>Your first bet registers your name with a 4-digit PIN of your choice. Use the same PIN
+          for later bets. If either runner doesn't start, that bet is void and stakes are refunded.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE BOOK ===== -->
+    <section class="section">
+      <h2>The Book</h2>
+      <div class="bettor">
+        <label>Your name <input id="bettor-name" type="text" maxlength="30" autocomplete="name" placeholder="e.g. Shona"></label>
+        <label>4-digit PIN <input id="bettor-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••"></label>
+        <div class="bettor-balance">Balance: <strong id="bettor-balance">S£100</strong></div>
+      </div>
+      <div id="markets" class="market-grid"></div>
+      <p id="bet-message" class="bet-message" role="status"></p>
+    </section>
+
+    <!-- ===== LEADERBOARD ===== -->
+    <section class="section">
+      <h2>Leaderboard</h2>
+      <div class="results-wrap">
+        <table class="results">
+          <thead><tr><th class="pos">#</th><th>Bettor</th><th>Staked</th><th>Balance</th></tr></thead>
+          <tbody id="leaderboard"><tr><td colspan="4" class="muted">No bets yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== BET FEED ===== -->
+    <section class="section">
+      <h2>Bets Placed</h2>
+      <ul id="feed" class="bet-feed"><li class="muted">No bets yet.</li></ul>
+    </section>
+
+  </div>
+
+  <div class="tartan-accent"></div>
+  <footer>
+    <p>&copy; 2026 The Stirling Stumble | The Stumble Bookies</p>
+    <p style="margin-top: 10px; font-style: italic;">"Gamble responsibly. Stumble irresponsibly."</p>
+  </footer>
+
+  <script>
+  // ===== Supabase connection =====
+  // Paste your project's URL and publishable (anon) key here. The key is meant to be public:
+  // the database only lets the website read bets and place them through place_bet().
+  const SUPABASE_URL = 'https://gsagfsebpsiknfogwgrf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_aS45u0-HWFaVi5Z8gruDGw_a2GDEmo6';
+
+  const BANKROLL = 100;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = (n) => 'S£' + (Math.round(n * 10) / 10).toLocaleString('en-GB');
+
+  let markets = [];
+  let bets = [];
+
+  async function api(path, options = {}) {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+      ...options,
+      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', ...(options.headers || {}) },
+    });
+    const body = await res.json().catch(() => null);
+    if (!res.ok) throw new Error((body && body.message) || 'Something went wrong (' + res.status + ').');
+    return body;
+  }
+
+  // What each bet pays back once its market is settled (0 if it lost, null if unsettled).
+  function payout(bet) {
+    const m = markets.find((x) => x.id === bet.market_id);
+    if (!m || !m.result) return null;
+    if (m.result === 'void') return bet.stake;
+    const inMarket = bets.filter((b) => b.market_id === m.id);
+    const total = inMarket.reduce((s, b) => s + b.stake, 0);
+    const winPool = inMarket.filter((b) => b.pick === m.result).reduce((s, b) => s + b.stake, 0);
+    if (winPool === 0) return bet.stake; // nobody backed the winner: refund everyone
+    return bet.pick === m.result ? (bet.stake * total) / winPool : 0;
+  }
+
+  function balanceOf(name) {
+    const mine = bets.filter((b) => b.player.toLowerCase() === name.toLowerCase());
+    const staked = mine.reduce((s, b) => s + b.stake, 0);
+    const returned = mine.reduce((s, b) => s + (payout(b) || 0), 0);
+    return { staked, balance: BANKROLL - staked + returned };
+  }
+
+  function isOpen(m) {
+    return !m.result && new Date() < new Date(m.closes_at);
+  }
+
+  function renderMarkets() {
+    $('markets').innerHTML = markets.map((m) => {
+      const inMarket = bets.filter((b) => b.market_id === m.id);
+      const total = inMarket.reduce((s, b) => s + b.stake, 0);
+      const side = (pick) => {
+        const own = inMarket.filter((b) => b.pick === pick);
+        const pool = own.reduce((s, b) => s + b.stake, 0);
+        const odds = pool ? (total / pool).toFixed(2) : '–';
+        const won = m.result === pick ? ' won' : '';
+        return `<button type="button" class="pick${won}" data-market="${esc(m.id)}" data-pick="${pick}" ${isOpen(m) ? '' : 'disabled'}>
+            <span class="pick-name">${esc(pick === 'a' ? m.option_a : m.option_b)}</span>
+            <span class="pick-odds">pays ${odds} per S£1</span>
+            <span class="pick-pool">${fmt(pool)} from ${own.length} bet${own.length === 1 ? '' : 's'}</span>
+          </button>`;
+      };
+      let status = `Total pool ${fmt(total)}`;
+      if (m.result === 'void') status = 'Void: all stakes refunded';
+      else if (m.result) status = `Settled: ${esc(m.result === 'a' ? m.option_a : m.option_b)} won`;
+      else if (!isOpen(m)) status = 'Betting closed: awaiting result';
+      return `<div class="market-card">
+          <h3>${esc(m.title)}</h3>
+          <div class="market-status">${status}</div>
+          <div class="pick-row">${side('a')}${side('b')}</div>
+          <div class="stake-row" ${isOpen(m) ? '' : 'hidden'}>
+            <label>Stake S£ <input type="number" min="1" max="100" step="1" value="10" id="stake-${esc(m.id)}"></label>
+            <span class="muted">Tap a name to place the bet.</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderLeaderboard() {
+    const names = [...new Set(bets.map((b) => b.player))];
+    if (!names.length) return;
+    const rows = names.map((n) => ({ name: n, ...balanceOf(n) }))
+      .sort((a, b) => b.balance - a.balance || a.name.localeCompare(b.name));
+    $('leaderboard').innerHTML = rows.map((r, i) =>
+      `<tr><td class="pos">${i + 1}</td><td>${esc(r.name)}</td><td>${fmt(r.staked)}</td><td><strong>${fmt(r.balance)}</strong></td></tr>`
+    ).join('');
+  }
+
+  function renderFeed() {
+    if (!bets.length) return;
+    $('feed').innerHTML = [...bets].reverse().map((b) => {
+      const m = markets.find((x) => x.id === b.market_id);
+      const pickName = m ? (b.pick === 'a' ? m.option_a : m.option_b) : b.pick;
+      const p = payout(b);
+      const outcome = p === null ? '' : p > b.stake ? ` <span class="win">won ${fmt(p)}</span>` : p === b.stake ? ' <span class="muted">refunded</span>' : ' <span class="lose">lost</span>';
+      const when = new Date(b.placed_at).toLocaleString('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+      return `<li><strong>${esc(b.player)}</strong> put ${fmt(b.stake)} on <strong>${esc(pickName)}</strong>${m ? ' (' + esc(m.option_a) + ' vs ' + esc(m.option_b) + ')' : ''}${outcome} <span class="muted">· ${when}</span></li>`;
+    }).join('');
+  }
+
+  function renderBalance() {
+    const name = $('bettor-name').value.trim();
+    $('bettor-balance').textContent = fmt(name ? balanceOf(name).balance : BANKROLL);
+  }
+
+  function renderAll() {
+    renderMarkets();
+    renderLeaderboard();
+    renderFeed();
+    renderBalance();
+  }
+
+  async function load() {
+    try {
+      [markets, bets] = await Promise.all([
+        api('markets?select=*&order=sort'),
+        api('bets?select=*&order=placed_at'),
+      ]);
+      renderAll();
+    } catch (e) {
+      $('bet-message').textContent = e.message;
+    }
+  }
+
+  async function placeBet(marketId, pick) {
+    const msg = $('bet-message');
+    const name = $('bettor-name').value.trim();
+    const pin = $('bettor-pin').value.trim();
+    const stake = parseInt($('stake-' + marketId).value, 10);
+    if (!name) { msg.textContent = 'Enter your name first.'; $('bettor-name').focus(); return; }
+    if (!/^[0-9]{4}$/.test(pin)) { msg.textContent = 'Enter your 4-digit PIN.'; $('bettor-pin').focus(); return; }
+    const m = markets.find((x) => x.id === marketId);
+    const pickName = pick === 'a' ? m.option_a : m.option_b;
+    if (!confirm(`Bet ${fmt(stake)} on ${pickName}?`)) return;
+    msg.textContent = 'Placing bet…';
+    try {
+      const r = await api('rpc/place_bet', {
+        method: 'POST',
+        body: JSON.stringify({ p_name: name, p_pin: pin, p_market: marketId, p_pick: pick, p_stake: stake }),
+      });
+      msg.textContent = `Done: ${fmt(stake)} on ${pickName}. You have ${fmt(r.left)} left to bet.`;
+      await load();
+    } catch (e) {
+      msg.textContent = e.message;
+    }
+  }
+
+  $('markets').addEventListener('click', (e) => {
+    const btn = e.target.closest('button.pick');
+    if (btn && !btn.disabled) placeBet(btn.dataset.market, btn.dataset.pick);
+  });
+  $('bettor-name').addEventListener('input', () => {
+    renderBalance();
+    try { localStorage.setItem('stumble-bettor', $('bettor-name').value); } catch (e) {}
+  });
+  try { $('bettor-name').value = localStorage.getItem('stumble-bettor') || ''; } catch (e) {}
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    $('not-connected').hidden = false;
+  } else {
+    load();
+    setInterval(load, 20000); // keep the odds and leaderboard fresh
+  }
+  </script>
+</body>
+</html>
