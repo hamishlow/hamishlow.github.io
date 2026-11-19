@@ -105,3 +105,10 @@ $$;
 insert into markets (id, title, option_a, option_b, closes_at, sort) values
   ('ben-hamish', 'Ben vs Hamish: who wins the decider?', 'Ben',  'Hamish', '2026-11-28 09:00:00+00', 1),
   ('fin-ani',    'Fin vs Ani: who finishes ahead?',      'Fin',  'Ani',    '2026-11-28 09:00:00+00', 2);
+
+-- Added 18 Nov 2026.
+insert into markets (id, title, option_a, option_b, closes_at, sort) values
+  ('shona-alistair', 'Over-80s Walk: Shona vs Alistair', 'Shona',   'Alistair', '2026-11-28 09:00:00+00', 3),
+  ('gillian-katie',  'Gillian vs Katie: who finishes ahead?', 'Gillian', 'Katie', '2026-11-28 09:00:00+00', 4),
+  ('ben-meg',        'Ben vs Meg: who finishes ahead?',  'Ben',     'Meg',      '2026-11-28 09:00:00+00', 5),
+  ('tomas-heather',  'Tomas vs Heather: who finishes ahead?', 'Tomas', 'Heather', '2026-11-28 09:00:00+00', 6);
