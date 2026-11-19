@@ -180,6 +180,9 @@
     return { total, a: side('a'), b: side('b') };
   }
 
+  // Short name for a bet: the title up to its colon ("Ben vs Hamish: who wins…" → "Ben vs Hamish").
+  const shortLabel = (m) => m.title.split(':')[0];
+
   function statusText(m) {
     if (m.result === 'void') return 'Void: refunded';
     if (m.result) return `${esc(m.result === 'a' ? m.option_a : m.option_b)} won`;
@@ -203,7 +206,7 @@
           </td>`;
       };
       const open = isOpen(m) ? ' odds-open' : '';
-      return `<tr><td class="odds-bet">${esc(m.option_a)} vs ${esc(m.option_b)}</td>${cell('a')}${cell('b')}
+      return `<tr><td class="odds-bet">${esc(shortLabel(m))}</td>${cell('a')}${cell('b')}
           <td><strong>${fmt(s.total)}</strong></td><td class="odds-status${open}">${statusText(m)}</td></tr>`;
     }).join('');
   }
@@ -226,7 +229,7 @@
       const p = payout(b);
       const outcome = p === null ? '' : p > b.stake ? ` <span class="win">won ${fmt(p)}</span>` : p === b.stake ? ' <span class="muted">refunded</span>' : ' <span class="lose">lost</span>';
       const when = new Date(b.placed_at).toLocaleString('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
-      return `<li><strong>${esc(b.player)}</strong> put ${fmt(b.stake)} on <strong>${esc(pickName)}</strong>${m ? ' (' + esc(m.option_a) + ' vs ' + esc(m.option_b) + ')' : ''}${outcome} <span class="muted">· ${when}</span></li>`;
+      return `<li><strong>${esc(b.player)}</strong> put ${fmt(b.stake)} on <strong>${esc(pickName)}</strong>${m ? ' (' + esc(shortLabel(m)) + ')' : ''}${outcome} <span class="muted">· ${when}</span></li>`;
     }).join('');
   }
 

@@ -112,3 +112,9 @@ insert into markets (id, title, option_a, option_b, closes_at, sort) values
   ('gillian-katie',  'Gillian vs Katie: who finishes ahead?', 'Gillian', 'Katie', '2026-11-28 09:00:00+00', 4),
   ('ben-meg',        'Ben vs Meg: who finishes ahead?',  'Ben',     'Meg',      '2026-11-28 09:00:00+00', 5),
   ('tomas-heather',  'Tomas vs Heather: who finishes ahead?', 'Tomas', 'Heather', '2026-11-28 09:00:00+00', 6);
+
+-- Added 19 Nov 2026. Yes/No bets: option_a = Yes, option_b = No.
+insert into markets (id, title, option_a, option_b, closes_at, sort) values
+  ('heather-pb',      'Will Heather have the most improved time relative to her PB?', 'Yes', 'No', '2026-11-28 09:00:00+00', 7),
+  ('shona-lap-ben',   'Shona (1 lap) vs Ben (5K): who finishes first?', 'Shona', 'Ben', '2026-11-28 09:00:00+00', 8),
+  ('katie-lap-shona', 'Will Katie lap Shona?', 'Yes', 'No', '2026-11-28 09:00:00+00', 9);
